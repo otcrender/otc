@@ -23,6 +23,7 @@ app.use(cors({
 
 const DOWNLOAD_DIR = path.join(__dirname);
 const CACHE_FILE_PATH = path.join(__dirname, 'schedule-cache.json');
+const FINAL_EXCEL_PATH = path.join(__dirname, 'schedule.xlsx');
 const oneDriveUrl = 'https://onedrive.live.com/:x:/g/personal/1B6B1B5379E6C66A/EWrG5nlTG2sggBssAwAAAAABERzkNcKT07ITcs1gY_M2RQ?resid=1B6B1B5379E6C66A!812&ithint=file%2Cxlsx&e=qbCH3Q&migratedtospo=true&redeem=aHR0cHM6Ly8xZHJ2Lm1zL3gvYy8xYjZiMWI1Mzc5ZTZjNjZhL0VXckc1bmxURzJzZ2dCc3NBd0FBQUFBQkVSemtOY0tUMDdJVGNzMWdZX00yUlE_ZT1xYkNIM1E';
 
 // Cache management
