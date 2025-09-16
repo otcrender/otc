@@ -510,6 +510,7 @@ async function downloadAndPlaceFile() {
 
         // Try different Chrome paths for Render
         const chromePaths = [
+            '/opt/render/.cache/puppeteer/chrome-linux/chrome',
             '/usr/bin/chrome-linux/chrome',
             '/usr/bin/google-chrome-stable',
             '/usr/bin/google-chrome',
