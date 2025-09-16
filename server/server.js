@@ -508,31 +508,65 @@ async function downloadAndPlaceFile() {
         // Create download directory if it doesn't exist
         if (!fs.existsSync(DOWNLOAD_DIR)) fs.mkdirSync(DOWNLOAD_DIR);
 
-        // Use Rendertron-style Chrome configuration
+        // Use Rendertron-style Chrome configuration with fallback
         console.log('Launching Puppeteer with Rendertron-style configuration...');
         
-        const browser = await puppeteer.launch({
-            headless: true,
-            args: [
-                '--no-sandbox',
-                '--disable-setuid-sandbox',
-                '--disable-dev-shm-usage',
-                '--disable-accelerated-2d-canvas',
-                '--no-first-run',
-                '--no-zygote',
-                '--single-process',
-                '--disable-gpu',
-                '--disable-web-security',
-                '--disable-features=VizDisplayCompositor',
-                '--disable-background-timer-throttling',
-                '--disable-backgrounding-occluded-windows',
-                '--disable-renderer-backgrounding',
-                '--disable-features=TranslateUI',
-                '--disable-ipc-flooding-protection'
-            ]
-        });
-        
-        console.log('Successfully launched Puppeteer with Rendertron-style configuration');
+        let browser;
+        try {
+            browser = await puppeteer.launch({
+                headless: true,
+                args: [
+                    '--no-sandbox',
+                    '--disable-setuid-sandbox',
+                    '--disable-dev-shm-usage',
+                    '--disable-accelerated-2d-canvas',
+                    '--no-first-run',
+                    '--no-zygote',
+                    '--single-process',
+                    '--disable-gpu',
+                    '--disable-web-security',
+                    '--disable-features=VizDisplayCompositor',
+                    '--disable-background-timer-throttling',
+                    '--disable-backgrounding-occluded-windows',
+                    '--disable-renderer-backgrounding',
+                    '--disable-features=TranslateUI',
+                    '--disable-ipc-flooding-protection'
+                ]
+            });
+            console.log('Successfully launched Puppeteer with Rendertron-style configuration');
+        } catch (error) {
+            console.log('Failed to launch Puppeteer with default config:', error.message);
+            
+            // Try with explicit Chrome path
+            try {
+                console.log('Trying with explicit Chrome path...');
+                browser = await puppeteer.launch({
+                    headless: true,
+                    executablePath: '/opt/render/.cache/puppeteer/chrome-linux/chrome',
+                    args: [
+                        '--no-sandbox',
+                        '--disable-setuid-sandbox',
+                        '--disable-dev-shm-usage',
+                        '--disable-accelerated-2d-canvas',
+                        '--no-first-run',
+                        '--no-zygote',
+                        '--single-process',
+                        '--disable-gpu',
+                        '--disable-web-security',
+                        '--disable-features=VizDisplayCompositor',
+                        '--disable-background-timer-throttling',
+                        '--disable-backgrounding-occluded-windows',
+                        '--disable-renderer-backgrounding',
+                        '--disable-features=TranslateUI',
+                        '--disable-ipc-flooding-protection'
+                    ]
+                });
+                console.log('Successfully launched Puppeteer with explicit Chrome path');
+            } catch (fallbackError) {
+                console.log('Failed to launch with explicit Chrome path:', fallbackError.message);
+                throw new Error('Could not launch Puppeteer with any configuration');
+            }
+        }
         const page = await browser.newPage();
         
         const client = await page.target().createCDPSession();
