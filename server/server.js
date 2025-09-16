@@ -540,9 +540,37 @@ async function downloadAndPlaceFile() {
             // Try with explicit Chrome path
             try {
                 console.log('Trying with explicit Chrome path...');
+                
+                // Try to find Chrome in the Puppeteer cache directory
+                const fs = require('fs');
+                const path = require('path');
+                const puppeteerCacheDir = '/opt/render/.cache/puppeteer/chrome';
+                let chromePath = null;
+                
+                try {
+                    const chromeDirs = fs.readdirSync(puppeteerCacheDir);
+                    for (const dir of chromeDirs) {
+                        if (dir.startsWith('linux-')) {
+                            const potentialPath = path.join(puppeteerCacheDir, dir, 'chrome-linux64', 'chrome');
+                            if (fs.existsSync(potentialPath)) {
+                                chromePath = potentialPath;
+                                break;
+                            }
+                        }
+                    }
+                } catch (err) {
+                    console.log('Could not read Puppeteer cache directory:', err.message);
+                }
+                
+                if (!chromePath) {
+                    throw new Error('Chrome executable not found in Puppeteer cache');
+                }
+                
+                console.log(`Found Chrome at: ${chromePath}`);
+                
                 browser = await puppeteer.launch({
                     headless: true,
-                    executablePath: '/opt/render/.cache/puppeteer/chrome-linux/chrome',
+                    executablePath: chromePath,
                     args: [
                         '--no-sandbox',
                         '--disable-setuid-sandbox',
