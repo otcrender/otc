@@ -508,73 +508,31 @@ async function downloadAndPlaceFile() {
         // Create download directory if it doesn't exist
         if (!fs.existsSync(DOWNLOAD_DIR)) fs.mkdirSync(DOWNLOAD_DIR);
 
-        // Try different Chrome paths for Render
-        const chromePaths = [
-            '/opt/render/.cache/puppeteer/chrome-linux/chrome',
-            '/usr/bin/chrome-linux/chrome',
-            '/usr/bin/google-chrome-stable',
-            '/usr/bin/google-chrome',
-            '/usr/bin/chromium-browser',
-            '/usr/bin/chromium',
-            process.env.PUPPETEER_EXECUTABLE_PATH
-        ].filter(Boolean);
-
-        let browser;
-        for (const chromePath of chromePaths) {
-            try {
-                console.log(`Trying Chrome path: ${chromePath}`);
-                browser = await puppeteer.launch({ 
-                    headless: true, 
-                    executablePath: chromePath,
-                    args: [
-                        '--no-sandbox', 
-                        '--disable-setuid-sandbox',
-                        '--disable-dev-shm-usage',
-                        '--disable-accelerated-2d-canvas',
-                        '--no-first-run',
-                        '--no-zygote',
-                        '--single-process',
-                        '--disable-gpu',
-                        '--disable-web-security',
-                        '--disable-features=VizDisplayCompositor'
-                    ]
-                });
-                console.log(`Successfully launched Chrome at: ${chromePath}`);
-                break;
-            } catch (error) {
-                console.log(`Failed to launch Chrome at ${chromePath}: ${error.message}`);
-                if (browser) {
-                    await browser.close();
-                    browser = null;
-                }
-            }
-        }
-
-        if (!browser) {
-            // Last resort: let Puppeteer find Chrome automatically
-            console.log('Trying Puppeteer default Chrome detection...');
-            try {
-                browser = await puppeteer.launch({ 
-                    headless: true, 
-                    args: [
-                        '--no-sandbox', 
-                        '--disable-setuid-sandbox',
-                        '--disable-dev-shm-usage',
-                        '--disable-accelerated-2d-canvas',
-                        '--no-first-run',
-                        '--no-zygote',
-                        '--single-process',
-                        '--disable-gpu',
-                        '--disable-web-security',
-                        '--disable-features=VizDisplayCompositor'
-                    ]
-                });
-                console.log('Successfully launched Chrome with default detection');
-            } catch (error) {
-                console.log(`Failed to launch Chrome with default detection: ${error.message}`);
-                throw new Error('Could not find Chrome in any of the expected locations');
-            }
-        }
+        // Use Rendertron-style Chrome configuration
+        console.log('Launching Puppeteer with Rendertron-style configuration...');
+        
+        const browser = await puppeteer.launch({
+            headless: true,
+            args: [
+                '--no-sandbox',
+                '--disable-setuid-sandbox',
+                '--disable-dev-shm-usage',
+                '--disable-accelerated-2d-canvas',
+                '--no-first-run',
+                '--no-zygote',
+                '--single-process',
+                '--disable-gpu',
+                '--disable-web-security',
+                '--disable-features=VizDisplayCompositor',
+                '--disable-background-timer-throttling',
+                '--disable-backgrounding-occluded-windows',
+                '--disable-renderer-backgrounding',
+                '--disable-features=TranslateUI',
+                '--disable-ipc-flooding-protection'
+            ]
+        });
+        
+        console.log('Successfully launched Puppeteer with Rendertron-style configuration');
         const page = await browser.newPage();
         
         const client = await page.target().createCDPSession();
