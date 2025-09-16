@@ -1,81 +1,109 @@
-# OTC Sports Center - Backend API
+# OTC Sports Center - Static Website
 
-This is the backend API server for the OTC Sports Center website, designed to run on Render.com.
+This is the static website for OTC Sports Center, a premier indoor tennis and pickleball facility in Oneonta, NY.
 
 ## Features
 
-- **Excel Processing**: Downloads and processes schedule data from OneDrive
-- **CORS Support**: Configured for cross-origin requests from static site
-- **Caching**: 30-minute cache with automatic refresh
-- **API Endpoints**: Provides processed schedule data to frontend
+- **Responsive Design**: Mobile-first approach with Bootstrap 5
+- **Modern UI**: Clean, professional design with smooth animations
+- **SEO Optimized**: Meta tags, structured data, and semantic HTML
+- **Contact Forms**: Interactive contact and reservation forms
+- **Lessons Page**: Dedicated page for instructor information and lesson booking
 
-## API Endpoints
-
-- `GET /schedule-processed` - Returns processed schedule data with days array
-- `GET /schedule-data` - Alternative endpoint (legacy)
-
-## Environment Variables
-
-- `PORT` - Automatically set by Render (default: 3000)
-
-## Dependencies
-
-- Express.js - Web framework
-- Puppeteer - Web scraping for Excel download
-- ExcelJS - Excel file processing
-- CORS - Cross-origin resource sharing
-- Compression - Response compression
-
-## Deployment on Render
-
-1. Connect this repository to Render
-2. Set build command: `npm install`
-3. Set start command: `npm start`
-4. Deploy from `backend` branch
-
-## Local Development
-
-```bash
-npm install
-npm start
-```
-
-Server will run on http://localhost:3000
-
-## CORS Configuration
-
-The server is configured to accept requests from:
-- `https://tennisestateoneonta.com`
-- `http://localhost:3000` (development)
-- `http://localhost:8080` (development)
-
-## Cache Management
-
-- Schedule data is cached for 30 minutes
-- Automatic refresh when cache expires
-- Fallback to expired cache if API fails
-
-## Static Site
-
-The frontend static site is hosted separately at:
-- **URL**: https://tennisestateoneonta.com/demo2/
-- **Repository**: Not included in this backend repo
-- **Features**: HTML, CSS, JS files with smart caching
-
-## Architecture
+## Project Structure
 
 ```
-Frontend (Static)          Backend (Render)
-┌─────────────────────┐    ┌─────────────────────┐
-│ tennisestateoneonta │───▶│ otc-schedule-api   │
-│ .com/demo2/         │    │ .onrender.com       │
-│                     │    │                     │
-│ - HTML/CSS/JS       │    │ - Excel Processing  │
-│ - Smart Caching     │    │ - API Endpoints     │
-│ - User Interface    │    │ - CORS Support      │
-└─────────────────────┘    └─────────────────────┘
+otc-deploy/
+├── index.html             # Homepage
+├── schedule.html          # Schedule page
+├── lessons.html           # Lessons page
+├── passes.html            # Passes page
+├── reservations.html      # Reservations page
+├── contact.html           # Contact page
+├── css/                   # Stylesheets
+│   ├── main.css          # Main styles
+│   └── schedule.css      # Schedule-specific styles
+├── js/                    # JavaScript files
+│   └── main.js           # Main JavaScript (static version)
+└── README.md              # This file
 ```
+
+## Pages
+
+- **Homepage**: Welcome page with facility overview
+- **Schedule**: Court schedule display (coming soon)
+- **Lessons**: Instructor profiles and lesson information
+- **Passes**: Membership and pass options
+- **Reservations**: Court reservation form
+- **Contact**: Contact information and form
+
+## Deployment
+
+### Static Hosting
+1. **Upload**: All files in this directory
+2. **Configuration**: No server-side configuration needed
+3. **Domain**: Can be hosted on any static hosting service
+
+### Recommended Hosting Services
+- **GitHub Pages**: Free static hosting
+- **Netlify**: Free tier with custom domains
+- **Vercel**: Free tier with excellent performance
+- **AWS S3 + CloudFront**: Scalable static hosting
+
+## Development
+
+### Local Development
+1. **Serve**: Use any static file server
+2. **Examples**:
+   - Python: `python -m http.server 8000`
+   - Node.js: `npx serve .`
+   - Live Server: VS Code extension
+
+### File Structure
+- **HTML**: Semantic markup with Bootstrap components
+- **CSS**: Custom styles with Bootstrap overrides
+- **JavaScript**: Vanilla JS with no external dependencies
+
+## Customization
+
+### Styling
+- **Colors**: Update CSS custom properties in `main.css`
+- **Layout**: Modify Bootstrap classes in HTML files
+- **Animations**: Adjust JavaScript animations in `main.js`
+
+### Content
+- **Text**: Update content directly in HTML files
+- **Images**: Replace images in appropriate directories
+- **Contact Info**: Update contact details in all pages
+
+## Features
+
+### Interactive Elements
+- **Mobile Menu**: Responsive navigation
+- **Smooth Scrolling**: Animated scroll to sections
+- **Form Validation**: Client-side form validation
+- **Loading States**: Visual feedback for user actions
+
+### Performance
+- **Optimized Images**: Compressed and properly sized
+- **Minified CSS**: Bootstrap CDN for fast loading
+- **Efficient JavaScript**: Minimal, focused code
+- **Fast Loading**: No external API dependencies
+
+## Maintenance
+
+### Updates
+1. **Content**: Edit HTML files directly
+2. **Styling**: Modify CSS files
+3. **Functionality**: Update JavaScript as needed
+4. **Deploy**: Upload changes to hosting service
+
+### Testing
+- **Responsive**: Test on mobile and desktop
+- **Forms**: Test contact and reservation forms
+- **Performance**: Check loading times
+- **Cross-browser**: Test in different browsers
 
 ## Support
 
-For issues or questions, contact the development team.
+For questions about the website or hosting, contact the development team.
