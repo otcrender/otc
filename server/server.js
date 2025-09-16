@@ -510,6 +510,7 @@ async function downloadAndPlaceFile() {
 
         // Try different Chrome paths for Render
         const chromePaths = [
+            '/usr/bin/chrome-linux/chrome',
             '/usr/bin/google-chrome-stable',
             '/usr/bin/google-chrome',
             '/usr/bin/chromium-browser',
@@ -549,7 +550,29 @@ async function downloadAndPlaceFile() {
         }
 
         if (!browser) {
-            throw new Error('Could not find Chrome in any of the expected locations');
+            // Last resort: let Puppeteer find Chrome automatically
+            console.log('Trying Puppeteer default Chrome detection...');
+            try {
+                browser = await puppeteer.launch({ 
+                    headless: true, 
+                    args: [
+                        '--no-sandbox', 
+                        '--disable-setuid-sandbox',
+                        '--disable-dev-shm-usage',
+                        '--disable-accelerated-2d-canvas',
+                        '--no-first-run',
+                        '--no-zygote',
+                        '--single-process',
+                        '--disable-gpu',
+                        '--disable-web-security',
+                        '--disable-features=VizDisplayCompositor'
+                    ]
+                });
+                console.log('Successfully launched Chrome with default detection');
+            } catch (error) {
+                console.log(`Failed to launch Chrome with default detection: ${error.message}`);
+                throw new Error('Could not find Chrome in any of the expected locations');
+            }
         }
         const page = await browser.newPage();
         
