@@ -1,120 +1,81 @@
-# OTC Sports Center - Deployment Setup
+# OTC Sports Center - Backend API
 
-This project has been separated into two parts for deployment:
+This is the backend API server for the OTC Sports Center website, designed to run on Render.com.
 
-## 1. Static Site (`/static-site/`)
-- **Hosting**: https://tennisestateoneonta.com/demo2/
-- **Contains**: All HTML, CSS, JS files for the frontend
-- **Features**: 
-  - Homepage with facility information
-  - Schedule page (connects to API for data)
-  - Passes page
-  - **NEW: Lessons page** with instructor information
-  - Contact page
-  - Reservations page
+## Features
 
-### Key Changes:
-- **Instructor/Lesson Content**: Moved from homepage and contact page to dedicated lessons page
-- **Navigation**: Added "Lessons" link to all page navigation menus
-- **API Integration**: Uses `js/config.js` for API endpoint configuration
-- **Smart Caching**: Implements local storage caching with background refresh for better performance
+- **Excel Processing**: Downloads and processes schedule data from OneDrive
+- **CORS Support**: Configured for cross-origin requests from static site
+- **Caching**: 30-minute cache with automatic refresh
+- **API Endpoints**: Provides processed schedule data to frontend
 
-## 2. API Server (`/server/`)
-- **Hosting**: Render.com (https://your-render-app.onrender.com)
-- **Contains**: Node.js server for Excel processing and schedule data
-- **Features**:
-  - Downloads Excel file from OneDrive
-  - Processes schedule data
-  - Provides `/schedule-processed` API endpoint
-  - CORS enabled for cross-origin requests
+## API Endpoints
 
-### Key Changes:
-- **CORS Support**: Added for cross-origin requests from static site
-- **No Static Files**: Server only provides API endpoints
-- **Environment Variables**: Uses `PORT` from Render
+- `GET /schedule-processed` - Returns processed schedule data with days array
+- `GET /schedule-data` - Alternative endpoint (legacy)
 
-## Deployment Steps
+## Environment Variables
 
-### Static Site (tennisestateoneonta.com/demo2)
-1. Upload all files from `/static-site/` to your web hosting
-2. Update `js/config.js` with your actual Render server URL:
-   ```javascript
-   const API_BASE_URL = window.location.hostname === 'localhost' 
-       ? 'http://localhost:3000'
-       : 'https://your-actual-render-app.onrender.com';
-   ```
+- `PORT` - Automatically set by Render (default: 3000)
 
-### API Server (Render.com)
-1. Create new Web Service on Render
-2. Connect to your repository
-3. Set build command: `npm install`
-4. Set start command: `npm start`
-5. Deploy from `/server/` directory
-6. Update the static site's config.js with your Render URL
+## Dependencies
 
-## File Structure
-```
-otc-deploy/
-├── static-site/           # Frontend files for tennisestateoneonta.com/demo2
-│   ├── index.html        # Homepage (instructors removed)
-│   ├── lessons.html      # NEW: Dedicated lessons page
-│   ├── schedule.html     # Schedule (uses API)
-│   ├── passes.html       # Passes page
-│   ├── contact.html      # Contact (instructors moved to lessons)
-│   ├── reservations.html # Reservations
-│   ├── css/             # Stylesheets
-│   └── js/
-│       ├── config.js        # NEW: API configuration
-│       ├── cache-manager.js # NEW: Smart caching system
-│       └── main.js          # Main JavaScript
-└── server/              # API server for Render
-    ├── server.js        # Modified for CORS and API-only
-    ├── package.json     # Added cors dependency
-    └── package-lock.json
+- Express.js - Web framework
+- Puppeteer - Web scraping for Excel download
+- ExcelJS - Excel file processing
+- CORS - Cross-origin resource sharing
+- Compression - Response compression
+
+## Deployment on Render
+
+1. Connect this repository to Render
+2. Set build command: `npm install`
+3. Set start command: `npm start`
+4. Deploy from `backend` branch
+
+## Local Development
+
+```bash
+npm install
+npm start
 ```
 
-## Configuration Notes
+Server will run on http://localhost:3000
 
-### API Endpoints
-- `/schedule-processed` - Returns processed schedule data with days array
+## CORS Configuration
 
-### CORS Configuration
 The server is configured to accept requests from:
 - `https://tennisestateoneonta.com`
 - `http://localhost:3000` (development)
 - `http://localhost:8080` (development)
 
-### Environment Variables (Render)
-- `PORT` - Automatically set by Render
-- No additional environment variables required
+## Cache Management
 
-## Testing Locally
-1. **API Server**: 
-   ```bash
-   cd server
-   npm install
-   npm start
-   ```
-   Server runs on http://localhost:3000
+- Schedule data is cached for 30 minutes
+- Automatic refresh when cache expires
+- Fallback to expired cache if API fails
 
-2. **Static Site**: 
-   - Use any local server (Live Server, Python http.server, etc.)
-   - The config.js will automatically use localhost API
+## Static Site
 
-## Lessons Page Features
-- Professional instructor profiles (Paul van der Sommen, Gary Segal)
-- Lesson types (Private, Semi-Private, Group)
-- Pricing information ($90 passholders, $120 non-passholders)
-- Contact integration for lesson scheduling
-- Responsive design matching site theme
+The frontend static site is hosted separately at:
+- **URL**: https://tennisestateoneonta.com/demo2/
+- **Repository**: Not included in this backend repo
+- **Features**: HTML, CSS, JS files with smart caching
 
-## Smart Caching System
-- **Local Storage**: Caches schedule data in browser for 30 minutes
-- **Background Refresh**: Automatically updates cache in background on page load
-- **Fallback Support**: Uses expired cache if API is unavailable
-- **Cache Status**: Shows last update time and cache validity
-- **Force Refresh**: Manual refresh button for immediate updates
-- **Performance**: Instant loading for repeat visits
+## Architecture
 
-## Navigation Updates
-All pages now include "Lessons" in the navigation menu between "Passes" and "Contact".
+```
+Frontend (Static)          Backend (Render)
+┌─────────────────────┐    ┌─────────────────────┐
+│ tennisestateoneonta │───▶│ otc-schedule-api   │
+│ .com/demo2/         │    │ .onrender.com       │
+│                     │    │                     │
+│ - HTML/CSS/JS       │    │ - Excel Processing  │
+│ - Smart Caching     │    │ - API Endpoints     │
+│ - User Interface    │    │ - CORS Support      │
+└─────────────────────┘    └─────────────────────┘
+```
+
+## Support
+
+For issues or questions, contact the development team.
