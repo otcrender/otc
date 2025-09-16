@@ -502,7 +502,8 @@ async function downloadAndPlaceFile() {
     let originalFileName = null;
 
     try {
-        if (!fs.existsSync(PUBLIC_DIR)) fs.mkdirSync(PUBLIC_DIR);
+        // Create download directory if it doesn't exist
+        if (!fs.existsSync(DOWNLOAD_DIR)) fs.mkdirSync(DOWNLOAD_DIR);
 
         browser = await puppeteer.launch({ headless: false, args: ['--no-sandbox', '--disable-setuid-sandbox'] });
         const page = await browser.newPage();
