@@ -10,6 +10,8 @@ const path = require('path');
 const ExcelJS = require('exceljs');
 const compression = require('compression');
 const cors = require('cors');
+const https = require('https');
+const http = require('http');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -508,6 +510,7 @@ async function downloadAndPlaceFile() {
 
         browser = await puppeteer.launch({ 
             headless: true, 
+            executablePath: process.env.PUPPETEER_EXECUTABLE_PATH || undefined,
             args: [
                 '--no-sandbox', 
                 '--disable-setuid-sandbox',
@@ -516,7 +519,9 @@ async function downloadAndPlaceFile() {
                 '--no-first-run',
                 '--no-zygote',
                 '--single-process',
-                '--disable-gpu'
+                '--disable-gpu',
+                '--disable-web-security',
+                '--disable-features=VizDisplayCompositor'
             ]
         });
         const page = await browser.newPage();
