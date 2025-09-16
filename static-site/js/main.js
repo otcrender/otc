@@ -2079,8 +2079,8 @@ function initializeSchedule() {
     // Schedule initialization is handled by the existing functions
 }
 
-function loadScheduleData() {
-    console.log('Loading schedule data...');
+async function loadScheduleData(forceRefresh = false) {
+    console.log('Loading schedule data...', forceRefresh ? '(force refresh)' : '');
     
     // Check if we're on the schedule page
     const scheduleContainer = document.getElementById('scheduleTableContainer');
@@ -2099,39 +2099,48 @@ function loadScheduleData() {
         </div>
     `;
     
-    // Fetch data from the correct endpoint
-    fetch(window.API_ENDPOINTS?.scheduleProcessed || '/schedule-processed')
-        .then(response => {
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-            return response.json();
-        })
-        .then(data => {
-            console.log('Schedule data loaded:', data);
-            
-            // Use the pre-processed data directly from the server
-            window.scheduleData = data.data; // This is already processed by the server
-            window.scheduleDays = data.days || [];
-            
-            // Display the schedule using the pre-processed data
-            displayScheduleFromProcessedData(window.scheduleData, window.scheduleDays);
-            
-            console.log('Schedule loaded successfully');
-        })
-        .catch(error => {
-            console.error('Error loading schedule data:', error);
-            scheduleContainer.innerHTML = `
-                <div class="schedule-error">
-                    <i class="fas fa-exclamation-triangle"></i>
-                    <h5>Error Loading Schedule</h5>
-                    <p>${error.message}</p>
-                    <button class="btn btn-primary" onclick="loadScheduleData()">
-                        <i class="fas fa-redo"></i> Try Again
-                    </button>
-                </div>
-            `;
-        });
+    try {
+        let data;
+        
+        if (forceRefresh) {
+            // Force refresh from API
+            console.log('Force refresh requested...');
+            data = await window.cacheManager.forceRefresh();
+        } else {
+            // Use cache manager (cached first, then background refresh)
+            data = await window.cacheManager.getScheduleData();
+        }
+        
+        console.log('Schedule data loaded:', data);
+        
+        // Use the pre-processed data directly from the server
+        window.scheduleData = data.data; // This is already processed by the server
+        window.scheduleDays = data.days || [];
+        
+        // Display the schedule using the pre-processed data
+        displayScheduleFromProcessedData(window.scheduleData, window.scheduleDays);
+        
+        // Show cache status
+        const cacheStatus = window.cacheManager.getCacheStatus();
+        if (cacheStatus.hasData) {
+            console.log(`Cache status: ${cacheStatus.ageMinutes} minutes old, valid: ${cacheStatus.isValid}`);
+        }
+        
+        console.log('Schedule loaded successfully');
+        
+    } catch (error) {
+        console.error('Error loading schedule data:', error);
+        scheduleContainer.innerHTML = `
+            <div class="schedule-error">
+                <i class="fas fa-exclamation-triangle"></i>
+                <h5>Error Loading Schedule</h5>
+                <p>${error.message}</p>
+                <button class="btn btn-primary" onclick="loadScheduleData()">
+                    <i class="fas fa-redo"></i> Try Again
+                </button>
+            </div>
+        `;
+    }
 }
 
 // Minimal clearFilters to prevent runtime error

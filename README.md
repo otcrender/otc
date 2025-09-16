@@ -17,6 +17,7 @@ This project has been separated into two parts for deployment:
 - **Instructor/Lesson Content**: Moved from homepage and contact page to dedicated lessons page
 - **Navigation**: Added "Lessons" link to all page navigation menus
 - **API Integration**: Uses `js/config.js` for API endpoint configuration
+- **Smart Caching**: Implements local storage caching with background refresh for better performance
 
 ## 2. API Server (`/server/`)
 - **Hosting**: Render.com (https://your-render-app.onrender.com)
@@ -63,8 +64,9 @@ otc-deploy/
 │   ├── reservations.html # Reservations
 │   ├── css/             # Stylesheets
 │   └── js/
-│       ├── config.js    # NEW: API configuration
-│       └── main.js      # Main JavaScript
+│       ├── config.js        # NEW: API configuration
+│       ├── cache-manager.js # NEW: Smart caching system
+│       └── main.js          # Main JavaScript
 └── server/              # API server for Render
     ├── server.js        # Modified for CORS and API-only
     ├── package.json     # Added cors dependency
@@ -105,6 +107,14 @@ The server is configured to accept requests from:
 - Pricing information ($90 passholders, $120 non-passholders)
 - Contact integration for lesson scheduling
 - Responsive design matching site theme
+
+## Smart Caching System
+- **Local Storage**: Caches schedule data in browser for 30 minutes
+- **Background Refresh**: Automatically updates cache in background on page load
+- **Fallback Support**: Uses expired cache if API is unavailable
+- **Cache Status**: Shows last update time and cache validity
+- **Force Refresh**: Manual refresh button for immediate updates
+- **Performance**: Instant loading for repeat visits
 
 ## Navigation Updates
 All pages now include "Lessons" in the navigation menu between "Passes" and "Contact".

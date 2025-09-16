@@ -212,6 +212,13 @@
                                         <option value="0">Loading days...</option>
                                     </select>
                                 </div>
+                                <div class="col-md-3 text-end">
+                                    <button class="btn btn-outline-primary btn-sm" onclick="handleRefresh()" id="refreshButton">
+                                        <i class="fas fa-sync-alt me-1"></i>Refresh
+                                    </button>
+                                    <br>
+                                    <small class="text-muted" id="cacheStatus"></small>
+                                </div>
                                 <div class="col-md-6">
                                     <div class="d-flex flex-wrap gap-2">
                                         <button class="btn btn-outline-secondary btn-sm filter-btn active" 
@@ -319,6 +326,9 @@
     
     <!-- API Configuration -->
     <script src="js/config.js"></script>
+    
+    <!-- Cache Manager -->
+    <script src="js/cache-manager.js"></script>
     
     <!-- JavaScript Fallback -->
     <noscript>
@@ -602,9 +612,53 @@
             });
         }
 
+        // Update cache status display
+        function updateCacheStatus() {
+            const cacheStatusEl = document.getElementById('cacheStatus');
+            if (!cacheStatusEl || !window.cacheManager) return;
+            
+            const status = window.cacheManager.getCacheStatus();
+            if (status.hasData) {
+                const ageText = status.ageMinutes === 0 ? 'just now' : 
+                               status.ageMinutes === 1 ? '1 minute ago' : 
+                               `${status.ageMinutes} minutes ago`;
+                cacheStatusEl.textContent = `Last updated: ${ageText}`;
+                cacheStatusEl.className = status.isValid ? 'text-success' : 'text-warning';
+            } else {
+                cacheStatusEl.textContent = 'No cached data';
+                cacheStatusEl.className = 'text-muted';
+            }
+        }
+
+        // Handle refresh button click
+        function handleRefresh() {
+            const refreshBtn = document.getElementById('refreshButton');
+            if (refreshBtn) {
+                refreshBtn.disabled = true;
+                refreshBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-1"></i>Refreshing...';
+            }
+            
+            loadScheduleData(true).finally(() => {
+                if (refreshBtn) {
+                    refreshBtn.disabled = false;
+                    refreshBtn.innerHTML = '<i class="fas fa-sync-alt me-1"></i>Refresh';
+                }
+                updateCacheStatus();
+            });
+        }
+
+        // Listen for data updates from background refresh
+        window.addEventListener('scheduleDataUpdated', function(event) {
+            console.log('Schedule data updated in background');
+            updateCacheStatus();
+        });
+
         // Initialize page
         document.addEventListener('DOMContentLoaded', function() {
             loadScheduleData();
+            
+            // Update cache status after a short delay to ensure cache manager is loaded
+            setTimeout(updateCacheStatus, 1000);
         });
     </script>
 </body>
