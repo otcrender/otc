@@ -694,9 +694,18 @@ app.get('/schedule-processed', async (req, res) => {
     }
 });
 
-// Serve the main HTML page at root
+// API-only server - no static file serving
+// Serve a simple API info page at root
 app.get('/', (req, res) => {
-    res.sendFile(path.join(PUBLIC_DIR, 'index.html'));
+    res.json({
+        message: 'OTC Sports Center API',
+        version: '1.0.0',
+        endpoints: {
+            '/schedule-processed': 'Get processed schedule data',
+            '/schedule-data': 'Get raw schedule data (legacy)'
+        },
+        documentation: 'https://github.com/otcrender/otc'
+    });
 });
 
 // Endpoint to get schedule data
