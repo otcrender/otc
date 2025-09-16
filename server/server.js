@@ -724,6 +724,16 @@ app.get('/schedule-processed', async (req, res) => {
             });
         }
 
+        // First, try to download the Excel file
+        try {
+            console.log('Attempting to download Excel file...');
+            await downloadAndPlaceFile();
+            console.log('Excel file download completed');
+        } catch (downloadError) {
+            console.log('Excel file download failed:', downloadError.message);
+            // Continue with processing even if download fails
+        }
+
         // Process Excel file and create pre-processed data
         const result = await processExcelFile(FINAL_EXCEL_PATH);
         if (!result) {
