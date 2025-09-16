@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Simple JS Test</title>
+</head>
+<body>
+    <h1>Simple JavaScript Test</h1>
+    <div id="result">Loading...</div>
+    
+    <script>
+        // Force an immediate visible change
+        document.body.style.backgroundColor = 'lightblue';
+        document.getElementById('result').innerHTML = 'JavaScript executed immediately!';
+        document.getElementById('result').style.color = 'red';
+        document.getElementById('result').style.fontSize = '24px';
+        
+        // Try to cause an intentional error to see if it shows up
+        setTimeout(function() {
+            try {
+                // This should work
+                fetch('/schedule-data')
+                    .then(response => {
+                        document.getElementById('result').innerHTML += '<br>API Response: ' + response.status;
+                        return response.json();
+                    })
+                    .then(data => {
+                        document.getElementById('result').innerHTML += '<br>API Success! Data rows: ' + (data.data ? data.data.length : 'unknown');
+                    })
+                    .catch(error => {
+                        document.getElementById('result').innerHTML += '<br>API Error: ' + error.message;
+                    });
+            } catch (e) {
+                document.getElementById('result').innerHTML += '<br>JavaScript Error: ' + e.message;
+            }
+        }, 1000);
+    </script>
+</body>
+</html>

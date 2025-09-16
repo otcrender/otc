@@ -1,0 +1,901 @@
+/* Schedule CSS - OTC Sports Center */
+
+/* Schedule Container */
+.schedule-container {
+    background: white;
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--shadow-sm);
+    padding: 2rem;
+    margin-bottom: 2rem;
+}
+
+/* Modern Schedule Styles */
+.modern-schedule {
+    background: white;
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--shadow-sm);
+    overflow: hidden;
+}
+
+.schedule-nav {
+    background: var(--light-color);
+    padding: 1rem;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.schedule-nav .nav-pills {
+    gap: 0.5rem;
+}
+
+.schedule-nav .nav-link {
+    border-radius: var(--border-radius);
+    padding: 0.75rem 1rem;
+    font-weight: 500;
+    transition: var(--transition);
+    border: 2px solid transparent;
+}
+
+.schedule-nav .nav-link:hover {
+    background-color: rgba(13, 110, 253, 0.1);
+    border-color: rgba(13, 110, 253, 0.2);
+}
+
+.schedule-nav .nav-link.active {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+    color: white;
+}
+
+/* Tab Content */
+.tab-content {
+    padding: 1.5rem;
+}
+
+.tab-pane {
+    display: none;
+}
+
+.tab-pane.active {
+    display: block;
+}
+
+.tab-pane.show {
+    display: block;
+}
+
+.day-nav-content {
+    text-align: center;
+}
+
+.day-name {
+    font-size: 0.75rem;
+    font-weight: 500;
+    opacity: 0.8;
+    margin-top: 0.25rem;
+}
+
+.day-date {
+    font-size: 0.875rem;
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+}
+
+.day-schedule {
+    padding: 1.5rem;
+}
+
+.court-section {
+    margin-bottom: 2rem;
+    border: 1px solid #e9ecef;
+    border-radius: var(--border-radius);
+    overflow: hidden;
+}
+
+.court-header {
+    background: var(--light-color);
+    padding: 1rem;
+    border-bottom: 1px solid #e9ecef;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.court-name {
+    font-size: 1.125rem;
+    font-weight: 600;
+    margin: 0;
+    color: var(--dark-color);
+}
+
+.court-status {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.status-badge {
+    padding: 0.25rem 0.75rem;
+    border-radius: var(--border-radius);
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.status-badge.available {
+    background-color: var(--success-color);
+    color: white;
+}
+
+.status-badge.occupied {
+    background-color: var(--secondary-color);
+    color: white;
+}
+
+.time-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 0.5rem;
+    padding: 1rem;
+}
+
+.time-slot {
+    padding: 0.75rem;
+    border-radius: var(--border-radius);
+    text-align: center;
+    cursor: pointer;
+    transition: var(--transition);
+    border: 2px solid transparent;
+    min-height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.time-slot:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.time-slot.slot-clicked {
+    transform: scale(0.95);
+}
+
+.slot-available {
+    background-color: var(--available-white);
+    border-color: var(--success-color);
+    color: var(--success-color);
+}
+
+.slot-tennis {
+    background-color: var(--tennis-green);
+    color: var(--dark-color);
+}
+
+.slot-pickleball {
+    background-color: var(--pickleball-blue);
+    color: var(--dark-color);
+}
+
+.slot-lesson {
+    background-color: var(--tentative-yellow);
+    color: var(--dark-color);
+}
+
+.slot-tentative {
+    background-color: var(--tentative-yellow);
+    color: var(--dark-color);
+    position: relative;
+}
+
+.slot-tentative::after {
+    content: '?';
+    position: absolute;
+    top: 4px;
+    right: 6px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    opacity: 0.7;
+}
+
+.slot-unavailable {
+    background-color: #f8f9fa;
+    color: var(--secondary-color);
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.slot-content {
+    text-align: center;
+}
+
+.slot-time {
+    font-size: 0.75rem;
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+    opacity: 0.8;
+}
+
+.slot-status {
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.slot-status.available {
+    color: var(--success-color);
+}
+
+.slot-status.booked {
+    color: var(--dark-color);
+}
+
+.slot-details {
+    margin-top: 0.25rem;
+}
+
+.sport-type {
+    font-weight: 600;
+    font-size: 0.7rem;
+}
+
+.instructor-name {
+    font-size: 0.65rem;
+    opacity: 0.8;
+    margin-top: 0.125rem;
+}
+
+/* Schedule Controls */
+.schedule-controls {
+    background: var(--light-color);
+    border-radius: var(--border-radius);
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.filter-section {
+    margin-bottom: 1.5rem;
+}
+
+.filter-section:last-child {
+    margin-bottom: 0;
+}
+
+.filter-section h6 {
+    color: var(--dark-color);
+    font-weight: 600;
+    margin-bottom: 1rem;
+    font-size: 0.875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Search Box */
+.search-box {
+    position: relative;
+    margin-bottom: 1rem;
+}
+
+.search-box input {
+    padding-left: 2.5rem;
+    border: 2px solid #e9ecef;
+    border-radius: var(--border-radius);
+    transition: var(--transition);
+}
+
+.search-box input:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+}
+
+.search-box .search-icon {
+    position: absolute;
+    left: 0.75rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--secondary-color);
+    pointer-events: none;
+}
+
+/* Filter Buttons */
+.filter-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+/* Filter Section Styling */
+.filter-section {
+    margin-bottom: 1.5rem;
+}
+
+.filter-section:last-child {
+    margin-bottom: 0;
+}
+
+.filter-section .form-label {
+    font-weight: 600;
+    color: var(--dark-color);
+    margin-bottom: 0.75rem;
+    font-size: 0.875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.filter-section .btn-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem;
+}
+
+.filter-section .btn-group .btn {
+    flex: 1;
+    min-width: 60px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    padding: 0.5rem 0.75rem;
+    border-radius: var(--border-radius);
+    transition: var(--transition);
+}
+
+.filter-section .btn-group .btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(13, 110, 253, 0.15);
+}
+
+.filter-section .btn-group .btn.active {
+    box-shadow: 0 2px 8px rgba(13, 110, 253, 0.3);
+}
+
+.filter-btn {
+    padding: 0.5rem 1rem;
+    border: 2px solid #e9ecef;
+    background: white;
+    color: var(--dark-color);
+    border-radius: var(--border-radius);
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: var(--transition);
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 60px;
+    white-space: nowrap;
+}
+
+.filter-btn:hover {
+    border-color: var(--primary-color);
+    color: var(--primary-color);
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(13, 110, 253, 0.15);
+}
+
+.filter-btn.active {
+    background: var(--primary-color);
+    border-color: var(--primary-color);
+    color: white;
+    box-shadow: 0 2px 8px rgba(13, 110, 253, 0.3);
+}
+
+.filter-btn.active:hover {
+    background: var(--primary-color);
+    color: white;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(13, 110, 253, 0.4);
+}
+
+/* Status Badges */
+.status-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.25rem 0.75rem;
+    border-radius: var(--border-radius);
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-right: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.status-badge.tennis {
+    background-color: var(--tennis-green);
+    color: var(--dark-color);
+}
+
+.status-badge.pickleball {
+    background-color: var(--pickleball-blue);
+    color: var(--dark-color);
+}
+
+.status-badge.tentative {
+    background-color: var(--tentative-yellow);
+    color: var(--dark-color);
+}
+
+.status-badge.available {
+    background-color: var(--available-white);
+    border: 2px solid #e9ecef;
+    color: var(--dark-color);
+}
+
+/* Schedule Table */
+.schedule-table-container {
+    overflow-x: auto;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-sm);
+    background: white;
+}
+
+.schedule-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.875rem;
+    background: white;
+}
+
+.schedule-table th,
+.schedule-table td {
+    padding: 0.75rem 0.5rem;
+    text-align: center;
+    border: 1px solid #e9ecef;
+    vertical-align: middle;
+}
+
+.schedule-table th {
+    background: var(--light-color);
+    font-weight: 600;
+    color: var(--dark-color);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+/* Time Column */
+.schedule-table .time-col {
+    background: var(--light-color);
+    font-weight: 600;
+    color: var(--dark-color);
+    position: sticky;
+    left: 0;
+    z-index: 5;
+    min-width: 80px;
+}
+
+/* Court Headers */
+.court-header {
+    background: linear-gradient(135deg, var(--primary-color), var(--success-color));
+    color: white;
+    font-weight: 600;
+    padding: 1rem 0.5rem;
+    position: relative;
+}
+
+.court-header::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 30px;
+    height: 3px;
+    background: rgba(255, 255, 255, 0.5);
+    border-radius: 2px;
+}
+
+/* Day Headers */
+.day-header {
+    background: var(--secondary-color);
+    color: white;
+    font-weight: 600;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 0.5rem;
+}
+
+/* Schedule Cells */
+.schedule-cell {
+    min-height: 50px;
+    position: relative;
+    cursor: pointer;
+    transition: var(--transition);
+    font-weight: 500;
+}
+
+.schedule-cell:hover {
+    transform: scale(1.02);
+    box-shadow: inset 0 0 0 2px var(--primary-color);
+    z-index: 2;
+}
+
+/* Cell Types */
+.cell-tennis {
+    background-color: var(--tennis-green);
+    color: var(--dark-color);
+}
+
+.cell-pickleball {
+    background-color: var(--pickleball-blue);
+    color: var(--dark-color);
+}
+
+.cell-tentative {
+    background-color: var(--tentative-yellow);
+    color: var(--dark-color);
+    position: relative;
+}
+
+.cell-tentative::after {
+    content: '?';
+    position: absolute;
+    top: 2px;
+    right: 4px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    opacity: 0.7;
+}
+
+.cell-available {
+    background-color: var(--available-white);
+    color: var(--secondary-color);
+    font-style: italic;
+}
+
+.cell-unavailable {
+    background-color: #f8f9fa;
+    color: var(--secondary-color);
+    opacity: 0.6;
+}
+
+/* Cell Content */
+.cell-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    padding: 0.25rem;
+}
+
+.cell-time {
+    font-size: 0.75rem;
+    opacity: 0.8;
+    margin-top: 0.25rem;
+}
+
+.cell-sport {
+    font-weight: 600;
+    font-size: 0.8rem;
+}
+
+/* Legend */
+.schedule-legend {
+    background: var(--light-color);
+    border-radius: var(--border-radius);
+    padding: 1.5rem;
+    margin-top: 2rem;
+}
+
+.schedule-legend h6 {
+    color: var(--dark-color);
+    font-weight: 600;
+    margin-bottom: 1rem;
+    font-size: 0.875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.legend-items {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    font-size: 0.875rem;
+}
+
+.legend-color {
+    width: 20px;
+    height: 20px;
+    border-radius: 4px;
+    margin-right: 0.5rem;
+    border: 1px solid #e9ecef;
+}
+
+/* Last Updated */
+.last-updated {
+    text-align: center;
+    color: var(--secondary-color);
+    font-size: 0.875rem;
+    margin-top: 1rem;
+    padding: 1rem;
+    background: var(--light-color);
+    border-radius: var(--border-radius);
+}
+
+.last-updated i {
+    margin-right: 0.5rem;
+    color: var(--success-color);
+}
+
+/* Mobile Styles */
+@media (max-width: 768px) {
+    .schedule-container {
+        padding: 1rem;
+        margin-bottom: 1rem;
+    }
+    
+    .schedule-controls {
+        padding: 1rem;
+    }
+    
+    .filter-buttons {
+        justify-content: center;
+    }
+    
+    .filter-btn {
+        font-size: 0.75rem;
+        padding: 0.4rem 0.8rem;
+    }
+    
+    .filter-section .btn-group {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+    
+    .filter-section .btn-group .btn {
+        width: 100%;
+        min-width: auto;
+    }
+    
+    .schedule-table {
+        font-size: 0.75rem;
+    }
+    
+    .schedule-table th,
+    .schedule-table td {
+        padding: 0.5rem 0.25rem;
+    }
+    
+    .court-header {
+        padding: 0.75rem 0.25rem;
+        font-size: 0.75rem;
+    }
+    
+    .day-header {
+        font-size: 0.65rem;
+        padding: 0.4rem;
+    }
+    
+    .cell-content {
+        padding: 0.15rem;
+    }
+    
+    .cell-sport {
+        font-size: 0.7rem;
+    }
+    
+    .cell-time {
+        font-size: 0.65rem;
+    }
+    
+    .legend-items {
+        justify-content: center;
+        gap: 0.75rem;
+    }
+    
+    .legend-item {
+        font-size: 0.75rem;
+    }
+    
+    .legend-color {
+        width: 16px;
+        height: 16px;
+    }
+    
+    /* Modern Schedule Mobile Styles */
+    .schedule-nav {
+        padding: 0.75rem;
+    }
+    
+    .schedule-nav .nav-pills {
+        flex-wrap: wrap;
+        gap: 0.25rem;
+    }
+    
+    .schedule-nav .nav-link {
+        padding: 0.5rem 0.75rem;
+        font-size: 0.75rem;
+        flex: 1;
+        min-width: 0;
+    }
+    
+    .day-name {
+        font-size: 0.75rem;
+    }
+    
+    .day-date {
+        font-size: 0.65rem;
+    }
+    
+    .day-schedule {
+        padding: 1rem;
+    }
+    
+    .court-section {
+        margin-bottom: 1.5rem;
+    }
+    
+    .court-header {
+        padding: 0.75rem;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+    }
+    
+    .court-name {
+        font-size: 1rem;
+    }
+    
+    .court-status {
+        width: 100%;
+        justify-content: space-between;
+    }
+    
+    .status-badge {
+        font-size: 0.65rem;
+        padding: 0.2rem 0.5rem;
+    }
+    
+    .time-grid {
+        grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+        gap: 0.25rem;
+        padding: 0.75rem;
+    }
+    
+    .time-slot {
+        padding: 0.5rem;
+        min-height: 60px;
+        font-size: 0.7rem;
+    }
+    
+    .slot-time {
+        font-size: 0.65rem;
+    }
+    
+    .slot-status {
+        font-size: 0.65rem;
+    }
+    
+    .sport-type {
+        font-size: 0.6rem;
+    }
+    
+    .instructor-name {
+        font-size: 0.55rem;
+    }
+}
+
+/* Extra Small Mobile */
+@media (max-width: 480px) {
+    .schedule-table {
+        font-size: 0.7rem;
+    }
+    
+    .schedule-table th,
+    .schedule-table td {
+        padding: 0.4rem 0.2rem;
+    }
+    
+    .court-header {
+        padding: 0.6rem 0.2rem;
+        font-size: 0.7rem;
+    }
+    
+    .filter-btn {
+        font-size: 0.7rem;
+        padding: 0.35rem 0.7rem;
+    }
+    
+    .cell-sport {
+        font-size: 0.65rem;
+    }
+    
+    .cell-time {
+        font-size: 0.6rem;
+    }
+}
+
+/* Loading States */
+.schedule-loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 300px;
+    color: var(--secondary-color);
+}
+
+.schedule-loading .spinner-border {
+    margin-right: 1rem;
+}
+
+/* Error States */
+.schedule-error {
+    background: #f8d7da;
+    color: #721c24;
+    padding: 1rem;
+    border-radius: var(--border-radius);
+    text-align: center;
+    margin: 2rem 0;
+}
+
+.schedule-error i {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+    display: block;
+}
+
+/* Empty State */
+.schedule-empty {
+    text-align: center;
+    padding: 3rem 1rem;
+    color: var(--secondary-color);
+}
+
+.schedule-empty i {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    opacity: 0.5;
+}
+
+.schedule-empty h5 {
+    margin-bottom: 0.5rem;
+    color: var(--dark-color);
+}
+
+/* Accessibility */
+.schedule-cell:focus {
+    outline: 2px solid var(--primary-color);
+    outline-offset: -2px;
+}
+
+.filter-btn:focus {
+    outline: 2px solid var(--primary-color);
+    outline-offset: 2px;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+    .schedule-table th,
+    .schedule-table td {
+        border: 2px solid #000;
+    }
+    
+    .cell-tennis,
+    .cell-pickleball,
+    .cell-tentative,
+    .cell-available {
+        border: 2px solid #000;
+    }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+    .schedule-cell,
+    .filter-btn,
+    .search-box input {
+        transition: none;
+    }
+    
+    .schedule-cell:hover {
+        transform: none;
+    }
+    
+    .filter-btn:hover {
+        transform: none;
+    }
+}
