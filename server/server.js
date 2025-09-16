@@ -508,22 +508,49 @@ async function downloadAndPlaceFile() {
         // Create download directory if it doesn't exist
         if (!fs.existsSync(DOWNLOAD_DIR)) fs.mkdirSync(DOWNLOAD_DIR);
 
-        browser = await puppeteer.launch({ 
-            headless: true, 
-            executablePath: process.env.PUPPETEER_EXECUTABLE_PATH || undefined,
-            args: [
-                '--no-sandbox', 
-                '--disable-setuid-sandbox',
-                '--disable-dev-shm-usage',
-                '--disable-accelerated-2d-canvas',
-                '--no-first-run',
-                '--no-zygote',
-                '--single-process',
-                '--disable-gpu',
-                '--disable-web-security',
-                '--disable-features=VizDisplayCompositor'
-            ]
-        });
+        // Try different Chrome paths for Render
+        const chromePaths = [
+            '/usr/bin/google-chrome-stable',
+            '/usr/bin/google-chrome',
+            '/usr/bin/chromium-browser',
+            '/usr/bin/chromium',
+            process.env.PUPPETEER_EXECUTABLE_PATH
+        ].filter(Boolean);
+
+        let browser;
+        for (const chromePath of chromePaths) {
+            try {
+                console.log(`Trying Chrome path: ${chromePath}`);
+                browser = await puppeteer.launch({ 
+                    headless: true, 
+                    executablePath: chromePath,
+                    args: [
+                        '--no-sandbox', 
+                        '--disable-setuid-sandbox',
+                        '--disable-dev-shm-usage',
+                        '--disable-accelerated-2d-canvas',
+                        '--no-first-run',
+                        '--no-zygote',
+                        '--single-process',
+                        '--disable-gpu',
+                        '--disable-web-security',
+                        '--disable-features=VizDisplayCompositor'
+                    ]
+                });
+                console.log(`Successfully launched Chrome at: ${chromePath}`);
+                break;
+            } catch (error) {
+                console.log(`Failed to launch Chrome at ${chromePath}: ${error.message}`);
+                if (browser) {
+                    await browser.close();
+                    browser = null;
+                }
+            }
+        }
+
+        if (!browser) {
+            throw new Error('Could not find Chrome in any of the expected locations');
+        }
         const page = await browser.newPage();
         
         const client = await page.target().createCDPSession();
